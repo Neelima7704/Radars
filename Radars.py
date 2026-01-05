@@ -1,4 +1,4 @@
-<pre>
+
 import csv
 
 # REQUIRED TOLERANCES
@@ -51,5 +51,3 @@ for i, ship in enumerate(ships_detected, 1):
 print("\nTotal Emitting Ships:", len(ships_detected))
 
 
-
-</pre>
