@@ -9,3 +9,23 @@ Frequency (MHz)
 │     ● ● ● ● ●            ← emitter 2
 │
 └─────────────────────────────────────────► DOA (degrees)
+
+Clustering Strategy:
+
+client_111: Waits for 1500 pulses before clustering (batched)
+client3: Clusters immediately after each window arrives (real-time)
+Features:
+
+client_111: Uses only DOA and frequency
+client3: Uses all 4 features (adds pulse_width and PRI)
+Eps parameter:
+
+client_111: eps=0.3 (tight, strict)
+client3: eps=0.8 (loose, flexible)
+Buffer Management:
+
+client_111: Manual list management
+client3: Automatic with deque(maxlen=2500)
+Scalability:
+
+client3 is more efficient — real-time processing, cleaner code, uses StandardScaler which is more robust
