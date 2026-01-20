@@ -1,0 +1,35 @@
+     Frequency
+        ▲
+        │   ●● ●       (Cluster 0: Emitter A)
+        │  ●  ●●●
+        │         
+        │          ●●●  (Cluster 1: Emitter B)
+        │          ● ●●
+        │       ●
+        │                (● = noise, far from others)
+        └─────────────► DOA
+
+
+
+1. Connect to server
+   ↓
+2. Receive batch of pulses (e.g., 100 pulses)
+   ↓
+3. Add to pulse_buffer (now 1200 pulses)
+   ↓
+4. Counter reaches 1500? NO → go back to step 2
+   ↓
+5. Counter reaches 1500? YES → CLUSTER
+   ├─ Normalize data (scale DOA & Freq equally)
+   ├─ Run DBSCAN (eps=0.3, min_samples=15)
+   ├─ For each cluster:
+   │  ├─ Calculate mean/min/max for DOA and Frequency
+   │  ├─ Try to match with existing emitters (gates: ±5° DOA, ±20 MHz)
+   │  ├─ If match: Update emitter (exponential smoothing: 70% old + 30% new)
+   │  └─ If no match: Create new emitter
+   ├─ Keep buffer ≤ 5000 pulses
+   └─ Reset counter → go back to step 2
+   ↓
+6. Server disconnects → Flush remaining pulses (relaxed min_samples: 5 instead of 15)
+   ↓
+7. Print final report: total pulses, emitter count, and detailed stats
